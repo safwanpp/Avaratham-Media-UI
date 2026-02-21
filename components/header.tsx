@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search, Menu, PenLine, Globe, ChevronDown, X } from "lucide-react";
 
 const navLinks = [
@@ -25,23 +25,32 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-[#f5f0e8] border-b border-[#c8b89a]">
       {/* Top bar */}
       <div className="flex items-center justify-between px-6 py-2 border-b border-[#c8b89a]">
-        <div className="flex items-center gap-3 text-xs text-[#5a4a3a]">
+        <div className="md:flex hidden items-center gap-3 text-xs text-[#5a4a3a]">
           <Globe size={14} />
-          <span className="font-medium tracking-widest">PAPERIO</span>
-          <span className="text-[#8a7a6a]">✦</span>
-          <span>24 Dec, 2024</span>
-          <span className="text-[#8a7a6a]">08:25 AM</span>
+          {/* <span className="font-medium tracking-widest">PAPERIO</span> */}
+          {/* <span className="text-[#8a7a6a]">✦</span> */}
+          <span>
+            {new Date().toLocaleDateString("en-US", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })}
+          </span>
+          <TimeDisplay />
         </div>
 
-        <h1 className="absolute left-1/2 -translate-x-1/2 font-serif text-2xl font-bold tracking-wide text-[#1a1208]">
+        <h1 className="font-serif md:text-2xl text-xl font-bold tracking-wide text-[#1a1208]">
           Avaratham Media
         </h1>
+        {/* <h1 className="absolute left-1/2 -translate-x-1/2 font-serif text-2xl font-bold tracking-wide text-[#1a1208]">
+          Avaratham Media
+        </h1> */}
 
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 bg-[#1a1208] text-[#f5f0e8] text-xs font-medium px-4 py-2 rounded-full hover:bg-[#3a2a18] transition-colors">
+          {/* <button className="flex items-center gap-2 bg-[#1a1208] text-[#f5f0e8] text-xs font-medium px-4 py-2 rounded-full hover:bg-[#3a2a18] transition-colors">
             <PenLine size={13} />
             Write News
-          </button>
+          </button> */}
           <div className="w-8 h-8 rounded-full bg-[#8a6a3a] overflow-hidden">
             <div className="w-full h-full bg-gradient-to-br from-amber-400 to-amber-700" />
           </div>
@@ -70,14 +79,14 @@ export default function Header() {
           ))}
         </div>
 
-        <div className="ml-auto">
+        {/* <div className="ml-auto">
           <button
             className="p-2 hover:bg-[#e8dcc8] rounded-full transition-colors text-[#3a2a18]"
             onClick={() => setSearchOpen(!searchOpen)}
           >
             <Search size={16} />
           </button>
-        </div>
+        </div> */}
       </nav>
 
       {/* Search bar */}
@@ -106,4 +115,23 @@ export default function Header() {
       )}
     </header>
   );
+}
+
+function TimeDisplay() {
+  const [time, setTime] = useState(new Date().toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  }));
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(new Date().toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return <span className="text-[#8a7a6a]">{time}</span>;
 }
